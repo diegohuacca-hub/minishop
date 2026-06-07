@@ -1,6 +1,6 @@
-# MiniShop — Lab 12: Pruebas de Integracion
+# MiniShop - Lab 12: Pruebas de Integracion
 
-**Curso:** Construccion y Pruebas de Software — IV Ciclo  
+**Curso:** Construccion y Pruebas de Software - IV Ciclo  
 **Alumno:** Diego Huacca Ccaso  
 **Docente:** Mg. Edwin Cordova Benavente  
 **Semana:** 12
@@ -9,8 +9,8 @@
 
 ## Descripcion
 
-API REST para gestionar productos de una tienda, desarrollada con Spring Boot.  
-El objetivo del laboratorio es implementar pruebas de integracion en tres capas.
+API REST para gestionar productos de una tienda, desarrollada con Spring Boot.
+El objetivo es implementar pruebas de integracion en tres capas.
 
 ---
 
@@ -43,15 +43,15 @@ El objetivo del laboratorio es implementar pruebas de integracion en tres capas.
 ### Estructura del proyecto
 ![estructura](evidencias/estructura.png)
 
-### mvn test — 13 tests en verde
+### mvn test - 13 tests en verde
 ![test](evidencias/test.png)
 
 ---
 
 ## Conclusiones
 
-1. Comprendi que las pruebas de integracion complementan a las unitarias verificando que los contratos entre capas funcionen correctamente.
+1. Comprendi que las pruebas de integracion complementan a las unitarias verificando los contratos entre capas.
 2. Aplique @DataJpaTest para probar el repositorio de forma aislada contra H2 sin levantar el contexto completo de Spring.
-3. Utilice @MockBean junto con @SpringBootTest para verificar la logica del servicio sin depender de la base de datos real.
-4. Implemente pruebas end-to-end con MockMvc que recorren el flujo completo desde la peticion HTTP hasta la base de datos H2 y de vuelta.
-5. Identifique que en Spring Boot 3.x es necesario un @RestControllerAdvice para convertir excepciones de negocio en respuestas HTTP correctas validables desde los tests.
+3. Utilice @MockBean para verificar la logica del servicio sin depender de la base de datos real.
+4. Implemente pruebas end-to-end con MockMvc desde la peticion HTTP hasta H2 y de vuelta.
+5. Identifique que se necesita @RestControllerAdvice para convertir excepciones en respuestas HTTP correctas.
