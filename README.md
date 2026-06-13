@@ -1,57 +1,24 @@
-# MiniShop - Lab 12: Pruebas de Integracion
+﻿# MiniShop REST API
 
-**Curso:** Construccion y Pruebas de Software - IV Ciclo  
-**Alumno:** Diego Huacca Ccaso  
-**Docente:** Mg. Edwin Cordova Benavente  
-**Semana:** 12
+![CI Pipeline](https://github.com/diegohuacca-hub/minishop/actions/workflows/ci.yml/badge.svg)
 
----
+API REST para gestión de productos desarrollada con Spring Boot.
 
-## Descripcion
-
-API REST para gestionar productos de una tienda, desarrollada con Spring Boot.
-El objetivo es implementar pruebas de integracion en tres capas.
-
----
-
-## Tecnologias
-
+## Tecnologías
 - Java 17
-- Spring Boot 3.2.5
-- Spring Data JPA
-- H2 Database (en memoria)
-- Lombok
-- JUnit 5 + MockMvc + Mockito
+- Spring Boot 3.x
+- H2 (base de datos en memoria para pruebas)
+- JUnit 5 + Mockito
+- Maven
 
----
+## Ejecutar localmente
+```bash
+mvn clean verify
+```
 
-## Pruebas de integracion
-
-| Clase | Anotacion | Tests |
-|---|---|---|
-| ProductRepositoryIntegrationTest | @DataJpaTest | 4 |
-| ProductServiceIntegrationTest | @SpringBootTest + @MockBean | 5 |
-| ProductControllerIntegrationTest | @SpringBootTest + MockMvc | 4 |
-
----
-
-## Resultados
-
-### mvn compile
-![compile](evidencias/compile.png)
-
-### Estructura del proyecto
-![estructura](evidencias/estructura.png)
-
-### mvn test - 13 tests en verde
-![test](evidencias/test.png)
-
----
-
-## Conclusiones
-
-1. Comprendi que las pruebas de integracion complementan a las unitarias verificando los contratos entre capas.
-2. Aplique @DataJpaTest para probar el repositorio de forma aislada contra H2 sin levantar el contexto completo de Spring.
-3. Utilice @MockBean para verificar la logica del servicio sin depender de la base de datos real.
-4. Implemente pruebas end-to-end con MockMvc desde la peticion HTTP hasta H2 y de vuelta.
-5. Identifique que se necesita @RestControllerAdvice para convertir excepciones en respuestas HTTP correctas.
+## Pipeline de CI
+Cada push a main ejecuta automáticamente:
+1. Compilación del proyecto
+2. Pruebas unitarias
+3. Pruebas de integración
+4. Publicación del reporte de pruebas
