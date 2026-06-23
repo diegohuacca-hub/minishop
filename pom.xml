@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+﻿<?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
@@ -23,9 +23,20 @@
         <!-- Versión de Lombok compatible con Java 17+ y Spring Boot 3.x -->
         <lombok.version>1.18.30</lombok.version>
 
-        <!-- ===== Configuración SonarCloud (Lab 14 - Parte 3.6) ===== -->
-        <!-- TODO: reemplazar por el nombre EXACTO de tu organización en SonarCloud -->
-        <sonar.organization>NOMBRE_DE_TU_ORGANIZACION_EN_SONARCLOUD</sonar.organization>
+        <!--
+            ===================================================================
+            LAB 14 - CONFIGURACIÓN DE SONARCLOUD (Parte 3.6)
+            ===================================================================
+            Estas propiedades conectan el proyecto con la plataforma SonarCloud
+            para el análisis estático de calidad del código.
+
+            sonar.organization    : nombre de la organización en SonarCloud
+            sonar.host.url        : URL de la plataforma (siempre sonarcloud.io)
+            sonar.coverage.jacoco : ruta del reporte XML generado por JaCoCo
+                                    que SonarCloud usa para mostrar la cobertura
+            ===================================================================
+        -->
+        <sonar.organization>diegohuacca-hub</sonar.organization>
         <sonar.host.url>https://sonarcloud.io</sonar.host.url>
         <sonar.coverage.jacoco.xmlReportPaths>
             ${project.build.directory}/site/jacoco/jacoco.xml
@@ -33,30 +44,26 @@
     </properties>
 
     <dependencies>
-        <!-- Spring Web — APIs REST -->
-        <!-- Docs: https://docs.spring.io/spring-framework/reference/web/webmvc.html -->
+        <!-- Spring Web - APIs REST -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
 
-        <!-- Spring Data JPA — acceso a base de datos -->
-        <!-- Docs: https://docs.spring.io/spring-data/jpa/reference/index.html -->
+        <!-- Spring Data JPA - acceso a base de datos -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-jpa</artifactId>
         </dependency>
 
-        <!-- H2 Database — base de datos en memoria para pruebas -->
-        <!-- Docs: https://www.h2database.com/html/main.html -->
+        <!-- H2 Database - base de datos en memoria para pruebas -->
         <dependency>
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>
             <scope>runtime</scope>
         </dependency>
 
-        <!-- Lombok — reducción de código repetitivo -->
-        <!-- Docs: https://projectlombok.org/features/ -->
+        <!-- Lombok - reducción de código repetitivo -->
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
@@ -64,8 +71,7 @@
             <optional>true</optional>
         </dependency>
 
-        <!-- Spring Boot Test — incluye JUnit 5, Mockito y AssertJ -->
-        <!-- Docs: https://docs.spring.io/spring-boot/reference/testing/index.html -->
+        <!-- Spring Boot Test - incluye JUnit 5, Mockito y AssertJ -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
@@ -105,13 +111,27 @@
                 </configuration>
             </plugin>
 
-            <!-- ===== JaCoCo (Lab 14 - Parte 1 + Parte 3.7) ===== -->
+            <!--
+                ===============================================================
+                LAB 14 - PLUGIN JACOCO (Parte 1 + Parte 3.7)
+                ===============================================================
+                JaCoCo instrumenta el bytecode durante la ejecución de pruebas
+                para registrar qué líneas, ramas y métodos fueron ejecutados.
+
+                Tiene 4 ejecuciones:
+                1. prepare-agent   : instrumenta el bytecode ANTES de los tests
+                2. jacoco-report   : genera reporte HTML en target/site/jacoco/
+                3. jacoco-check    : falla el build si cobertura baja del 70%
+                4. jacoco-report-xml: genera reporte XML requerido por SonarCloud
+                ===============================================================
+            -->
             <plugin>
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
                 <version>0.8.11</version>
                 <executions>
-                    <!-- Paso 1: preparar el agente de JaCoCo antes de las pruebas -->
+
+                    <!-- Ejecución 1: instrumentar el bytecode antes de las pruebas -->
                     <execution>
                         <id>jacoco-prepare-agent</id>
                         <goals>
@@ -119,7 +139,7 @@
                         </goals>
                     </execution>
 
-                    <!-- Paso 2: generar el reporte HTML después de las pruebas -->
+                    <!-- Ejecución 2: generar reporte HTML después de las pruebas -->
                     <execution>
                         <id>jacoco-report</id>
                         <phase>verify</phase>
@@ -128,7 +148,11 @@
                         </goals>
                     </execution>
 
-                    <!-- Paso 3: verificar umbral mínimo de cobertura -->
+                    <!--
+                        Ejecución 3: verificar umbral mínimo de cobertura
+                        Si la cobertura de líneas es menor al 70%, el build falla.
+                        Garantiza que el equipo mantenga un nivel mínimo de pruebas.
+                    -->
                     <execution>
                         <id>jacoco-check</id>
                         <phase>verify</phase>
@@ -141,6 +165,7 @@
                                     <element>BUNDLE</element>
                                     <limits>
                                         <limit>
+                                            <!-- Umbral mínimo del curso: 70% de líneas cubiertas -->
                                             <counter>LINE</counter>
                                             <value>COVEREDRATIO</value>
                                             <minimum>0.70</minimum>
@@ -151,7 +176,11 @@
                         </configuration>
                     </execution>
 
-                    <!-- Paso 4: generar también el reporte en XML (requerido por SonarCloud) -->
+                    <!--
+                        Ejecución 4: generar reporte en formato XML (Parte 3.7)
+                        SonarCloud necesita el XML para mostrar la cobertura
+                        en su dashboard. Se genera junto con el reporte HTML.
+                    -->
                     <execution>
                         <id>jacoco-report-xml</id>
                         <phase>verify</phase>
@@ -165,15 +194,30 @@
                             </formats>
                         </configuration>
                     </execution>
+
                 </executions>
             </plugin>
 
-            <!-- ===== SonarCloud Scanner (Lab 14 - Parte 4.2) ===== -->
+            <!--
+                ===============================================================
+                LAB 14 - PLUGIN SONARCLOUD (Parte 4.2)
+                ===============================================================
+                El sonar-maven-plugin permite ejecutar el análisis estático
+                desde Maven con: mvn sonar:sonar
+
+                El paso 6 del pipeline (ci.yml) ejecuta este comando en cada
+                push a main, enviando resultados a SonarCloud automáticamente.
+
+                Analiza: bugs, vulnerabilidades, code smells, duplicaciones
+                y muestra la cobertura reportada por JaCoCo.
+                ===============================================================
+            -->
             <plugin>
                 <groupId>org.sonarsource.scanner.maven</groupId>
                 <artifactId>sonar-maven-plugin</artifactId>
                 <version>3.10.0.2594</version>
             </plugin>
+
         </plugins>
     </build>
 </project>
